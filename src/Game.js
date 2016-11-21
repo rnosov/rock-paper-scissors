@@ -17,17 +17,18 @@ const
 		compare: PropTypes.func,
 		translateResult: PropTypes.func,
   },
+  DRAW = -1, WIN = 0, LOSS = 1,
   defaultProps = {
 		elements: ['Rock', 'Paper', 'Scissors'],
 		compare: (elements, x, y) => {
 			x = elements.indexOf(x);
 			y = elements.indexOf(y);
 			if ( x === y )
-				return -1;			
+				return DRAW;			
 			const c = (x - y) % elements.length, mod = c < 0 ? c + elements.length : c;
-			return mod < elements.length / 2 ? 0 : 1;
+			return mod < elements.length / 2 ? WIN : LOSS;
 		},
-		translateResult: result => result === -1 ? 'Draw' : result ? 'You Lost' : 'You won',	
+		translateResult: result => result === DRAW ? 'Draw' : result === LOSS ? 'You lost' : 'You won',	
   };
 
 class Game extends Component {	
@@ -92,12 +93,12 @@ class Game extends Component {
 	}
 
 	displayMove(index) {		
-  	const score = this.state.rounds.reduce( (score, { result }) => score + ( result === index ? 1 : 0 ), 0)
+  	const score = this.state.rounds.reduce( (score, { result }) => score + ( result === index ? 1 : 0 ), 0);
 		return (
 			<div className="row">			
 				<div key={this.state.rounds.length} className={ `animated ${this.state.isAnimationPlaying ? 'bounce' : 'fadeIn' }` }>
 					<i 
-						style={{fontSize: '9em'}} 
+						style={{ fontSize: '9em' }} 
 						className={ this.state.isAnimationPlaying || !this.state.rounds.length ? 'icon-rock' : `icon-${this.state.rounds[0].moves[index].toLowerCase()}` }
 					>
 					</i>				
