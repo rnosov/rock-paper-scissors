@@ -1,5 +1,6 @@
 /*
- * Game React Component
+ * A Game of Rock, Paper, Scissors 
+ * React Component
  *
  * Copyright © Roman Nosov 2016
  *
@@ -13,21 +14,35 @@ import 'animate.css/source/fading_entrances/fadeIn.css';
 
 const
   propTypes = {
+  	//
+  	// Array of playable elements
+  	// You must provide CSS classes named like lowercase elements 
+  	// prefixed with 'icon-' i.e. 'icon-rock'
 		elements: PropTypes.array,
+		//
+		// function that compares player moves
+		// it should return -1 in case of a draw
+		// 0 if the first player won
+		// 1 if the second player won
 		compare: PropTypes.func,
+		//
+		// function that translates the results from the compare function 
+		// into readable strings
 		translateResult: PropTypes.func,
   },
-  DRAW = -1, WIN = 0, LOSS = 1,
+  DRAW = -1, WIN = 0, LOSS = 1, // Human player is 0, Computer is 1
   defaultProps = {
-		elements: ['Rock', 'Paper', 'Scissors'],
+		elements: ['Rock', 'Paper', 'Scissors'], 
 		compare: (elements, x, y) => {
+			// Generalized solution to the Rock, Paper, Scissors, ... problem
+			// Adopted from http://jsfiddle.net/QHzk3/2/
 			x = elements.indexOf(x);
 			y = elements.indexOf(y);
 			if ( x === y )
 				return DRAW;			
 			const c = (x - y) % elements.length, mod = c < 0 ? c + elements.length : c;
 			return mod < elements.length / 2 ? WIN : LOSS;
-		},
+		},		
 		translateResult: result => result === DRAW ? 'Draw' : result === LOSS ? 'You lost' : 'You won',	
   };
 
@@ -36,11 +51,13 @@ class Game extends Component {
 	constructor() {
 		super();		
 		this.state = { rounds: [], isAnimationPlaying: false };
+		// binding event handlers to this
 		this.onClick = this.handleClick.bind(this);
 		this.onReset = this.handleReset.bind(this);
 		this.onSimulate = this.handleSimulate.bind(this);
 	}
 
+	//returns random playable element
 	simulateMove() {
 		return this.props.elements[Math.floor(Math.random()*this.props.elements.length)];
 	}
@@ -53,6 +70,7 @@ class Game extends Component {
 		setTimeout( () => this.setState({ isAnimationPlaying: false, rounds: [{ result, moves }, ...this.state.rounds] }), 1000 );
 	}
 
+	//data-id is used to avoid creating functional objects on every render
 	handleClick({ currentTarget }) {
 		this.play(currentTarget.getAttribute('data-id'), this.simulateMove());
 	}
