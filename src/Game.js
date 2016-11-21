@@ -53,7 +53,7 @@ class Game extends Component {
 		this.state = { rounds: [], isAnimationPlaying: false };
 		// binding event handlers to this
 		this.onClick = this.handleClick.bind(this);
-		this.onReset = this.handleReset.bind(this);
+		this.onRestart = this.handleRestart.bind(this);
 		this.onSimulate = this.handleSimulate.bind(this);
 	}
 
@@ -75,7 +75,7 @@ class Game extends Component {
 		this.play(currentTarget.getAttribute('data-id'), this.simulateMove());
 	}
 
-	handleReset() {
+	handleRestart() {
 		if (this.state.isAnimationPlaying) 
 			return;
 		this.setState({ rounds: [] });
@@ -90,11 +90,11 @@ class Game extends Component {
 			<div>
 				<div className="row">
 					<button 
-      			onClick={this.onReset} 
+      			onClick={this.onRestart} 
       			type="button" 
       			className={`btn btn-outline-danger${ !this.state.isAnimationPlaying && this.state.rounds.length ? '' : ' disabled' }`}
       		>
-      			Reset Game
+      			Restart the Game
       		</button>
 				</div>
 				<br/>
@@ -154,7 +154,7 @@ class Game extends Component {
       		type="button"
       		className={`btn btn-outline-warning${ this.state.isAnimationPlaying ? ' disabled' : '' }`}      					
       	>
-      		Simulate My Move
+      		Simulate a Game
       	</button>
       </div>
     );
@@ -182,7 +182,7 @@ class Game extends Component {
 			</div>
     );
   }
-  
+
 }
 
 Game.propTypes = propTypes;
