@@ -182,6 +182,7 @@ class Game extends Component {
 			</div>
     );
   }
+  
 }
 
 Game.propTypes = propTypes;
