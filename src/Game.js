@@ -76,6 +76,8 @@ class Game extends Component {
 	}
 
 	handleReset() {
+		if (this.state.isAnimationPlaying) 
+			return;
 		this.setState({ rounds: [] });
 	}
 
@@ -83,14 +85,14 @@ class Game extends Component {
 		this.play(this.simulateMove(), this.simulateMove());
 	}
 
-	displayScoreboard() {
+	displayHistory() {
 		return (
 			<div>
 				<div className="row">
 					<button 
       			onClick={this.onReset} 
       			type="button" 
-      			className={`btn btn-outline-danger${this.state.rounds.length?'':' disabled'}`}
+      			className={`btn btn-outline-danger${ !this.state.isAnimationPlaying && this.state.rounds.length ? '' : ' disabled' }`}
       		>
       			Reset Game
       		</button>
@@ -169,7 +171,7 @@ class Game extends Component {
 			    </div>
 			    <div className="col-sm-4">
     			  <h2>{this.state.rounds.length} round{this.state.rounds.length === 1 ? '':'s'} played</h2>
-			      {this.displayScoreboard()}
+			      {this.displayHistory()}
 			    </div>
 			    <div className="col-sm-4">
 			    	<h2>Computer</h2>
